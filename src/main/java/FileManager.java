@@ -42,7 +42,8 @@ public class FileManager {
         }
     }
 
-    public void read(ArrayList<Task> incomplete, ArrayList<Task> archived) {
+    public ArrayList<ArrayList<Task>> read() {
+        ArrayList<ArrayList<Task>> arrays = new ArrayList<ArrayList<Task>>();
         // get the user's home directory as default
         String userHome = System.getProperty("user.home");
         String documentsPath;
@@ -61,11 +62,17 @@ public class FileManager {
 
         // try to read from the JSON files
         try {
-            incomplete = mapper.readValue(inc, new TypeReference<ArrayList<Task>>() {});
-            archived = mapper.readValue(arch, new TypeReference<ArrayList<Task>>() {});
+            ArrayList<Task> incomplete = mapper.readValue(inc, new TypeReference<ArrayList<Task>>() {
+            });
+            arrays.add(incomplete);
+            ArrayList<Task> archived = mapper.readValue(arch, new TypeReference<ArrayList<Task>>() {
+            });
+            arrays.add(archived);
+            System.out.println("Loaded successfully.");
         } catch (IOException e) {
             System.out.println("Failed to read files: "+e.getMessage());
         }
+        return arrays;
     }
 
     public void changePath(Scanner scanner) {

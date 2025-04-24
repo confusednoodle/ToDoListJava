@@ -1,10 +1,5 @@
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 // TODO: maybe replace all "back" options with the single Q
 // TODO: maybe implement persistent path storage
@@ -15,7 +10,6 @@ public class TaskManager {
     private Scanner scanner;
     private String input = "";
     // the user can indicate a path they want to save in, the path isn't saved
-    // FIXME uncomment if breaks: private String path = "";
     private FileManager fm;
 
     // upper menu input handling, this is the function main hands over to
@@ -60,7 +54,9 @@ public class TaskManager {
                         break;
 
                     case "5":
-                        fm.read(incomplete,archived);
+                        ArrayList<ArrayList<Task>> arrays = fm.read();
+                        incomplete = arrays.get(0);
+                        archived = arrays.get(1);
                         break;
 
                     case "6":
@@ -295,89 +291,5 @@ public class TaskManager {
         } else if (input.equals("3")) {return;}
     }
 
-    // save ArrayLists to JSON
-    // FIXME uncomment if breaks
-    /*public void save() {
-        // get the user's home directory as default
-        String userHome = System.getProperty("user.home");
-        String documentsPath;
-        if (path.equals("")) {
-            documentsPath = userHome + "/Documents";
-        } else { // if the user has provided a custom path
-            documentsPath = path + "/Documents";
-        }
-
-        File ToDoTasks = new File(documentsPath,"ToDoTasks");
-        // create directory to save JSON files into if it doesn't exist yet
-        if(!ToDoTasks.exists()) {
-            ToDoTasks.mkdirs();
-        }
-        String toDoPath = documentsPath + "/ToDoTasks";
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        File wip = new File(toDoPath,"incompleteTasks.json");
-        File arch = new File(toDoPath,"archivedTasks.json");
-        try {
-            mapper.writeValue(wip,incomplete);
-            System.out.println("Incomplete Tasks saved to file.");
-            mapper.writeValue(arch,archived);
-            System.out.println("Archived Tasks saved to file.");
-        } catch (IOException e) {
-            System.out.println("Failed to save files: "+e.getMessage());
-        }
-    }*/
-    // read ArrayLists from JSON file
-    // FIXME comment if breaks
-    /*public void read() {
-        // get the user's home directory as default
-        String userHome = System.getProperty("user.home");
-        String documentsPath;
-        if (path.equals("")) {
-            documentsPath = userHome + "/Documents";
-        } else { // if the user has provided a custom path
-            documentsPath = path + "/Documents";
-        }
-        // path and file prep
-        String toDoPath = documentsPath + "/ToDoTasks";
-        String incPath = toDoPath+"/incompleteTasks.json";
-        String archPath = toDoPath+"/archivedTasks.json";
-        ObjectMapper mapper = new ObjectMapper();
-        File inc = new File(incPath);
-        File arch = new File(archPath);
-
-        // try to read from the JSON files
-        try {
-            incomplete = mapper.readValue(inc, new TypeReference<ArrayList<Task>>() {});
-            archived = mapper.readValue(arch, new TypeReference<ArrayList<Task>>() {});
-        } catch (IOException e) {
-            System.out.println("Failed to read files: "+e.getMessage());
-        }
-    }*/
-    // FIXME uncomment if breaks
-    /*public void changePath() {
-        String tempPath;
-        if (path.equals("")) {
-            tempPath = "user/Documents";
-        } else {
-            tempPath = path;
-        }
-        System.out.println("Your current path is: "+tempPath);
-        System.out.println("Indicate a valid absolute path to save the JSON files in.\n" +
-                "The path will not be validated or persistently stored.\n" +
-                "Type \"default\" to revert to the standard path.");
-        // double to allow for actual input
-        input = scanner.nextLine();
-        input = scanner.nextLine();
-        if (input.equals("default")) {
-            path = "";
-            System.out.println("Reverted to default path.");
-            return;
-        } else if (input.equals("q")||input.equals("Q")) {
-            return;
-        }
-        path = input;
-        System.out.println("Custom path set to: "+path);
-    }*/
     public TaskManager() { }
 }
