@@ -30,3 +30,4 @@ bin/
 
 *.zip
 *.jar
+target
