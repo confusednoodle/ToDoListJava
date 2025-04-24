@@ -22,13 +22,13 @@ public class TaskManager {
             do {
                 int wips = incomplete.size();
                 System.out.println("Welcome to your ToDo-List! You have "+wips+" incomplete task(s).\n" +
+                        "Input B in any menu to return to the previous menu.\n" +
                         "1) List tasks\n" +
                         "2) Add task\n" +
                         "3) Clear tasks\n" +
                         "4) Save to file\n" +
                         "5) Load from file\n" +
-                        "6) Specify custom file path\n" +
-                        "7) Exit");
+                        "6) Specify custom file path");
                 input = scanner.next();
 
                 switch (input) {
@@ -63,7 +63,8 @@ public class TaskManager {
                         fm.changePath(scanner);
                         break;
 
-                    case "7":
+                    case "B":
+                    case "b":
                         return;
                 }
             } while (true);
@@ -78,16 +79,22 @@ public class TaskManager {
             while (!(input.equals("1") || input.equals("2"))) {
                 System.out.println("List which tasks?\n" +
                         "1) Incomplete tasks\n" +
-                        "2) Archived tasks\n" +
-                        "3) Back");
+                        "2) Archived tasks");
                 input = scanner.next();
-                if (input.equals("1")) {
-                    taskList = incomplete;
-                    System.out.println("Selected incomplete tasks.");
-                } else if (input.equals("2")) {
-                    taskList = archived;
-                } else if (input.equals("3")) {
-                    return;
+
+                switch (input) {
+                    case "1":
+                        taskList = incomplete;
+                        System.out.println("Selected incomplete tasks.");
+                        break;
+
+                    case "2":
+                        taskList = archived;
+                        break;
+
+                    case "b":
+                    case "B":
+                        return;
                 }
             }
             list(taskList);
@@ -105,12 +112,12 @@ public class TaskManager {
                     System.out.println("" + i + ". " + taskList.get(i).getTitle() + "\n");
                 }
             }
-            System.out.println("Select a task or go back with Q+ENTER.");
+            System.out.println("Select a task.");
             while (true) {
                 int num;
                 String taskNr;
                 taskNr = scanner.nextLine();
-                if (taskNr.equals("q")||taskNr.equals("Q")) {
+                if (taskNr.equals("b")||taskNr.equals("B")) {
                     return;
                 } else {
                     // gets value if input is a valid number
@@ -151,8 +158,7 @@ public class TaskManager {
                         "3) Change progress status\n" +
                         "4) Mark as done\n" +
                         "5) Delete\n" +
-                        "6) Assign priority\n" +
-                        "7) Back");
+                        "6) Assign priority");
                 input = scanner.next();
 
                 switch (input) {
@@ -204,7 +210,8 @@ public class TaskManager {
                         // also go back to task list because task priority and thus index has now changed
                         break;
 
-                    case "7":
+                    case "b":
+                    case "B":
                         return;
                 }
             }
@@ -213,8 +220,7 @@ public class TaskManager {
                 System.out.println("Task " + i + ") " + taskList.get(i).getTitle() + "; status: " + status + "\n" +
                         "1) Get details\n" +
                         "2) Set details\n" +
-                        "3) Delete\n" +
-                        "4) Back");
+                        "3) Delete");
                 input = scanner.next();
 
                 switch (input) {
@@ -236,7 +242,8 @@ public class TaskManager {
                         deleteTask(taskList, i);
                         System.out.println("Task deleted.");
 
-                    case "4":
+                    case "b":
+                    case "B":
                         return;
                 }
             }
@@ -279,16 +286,24 @@ public class TaskManager {
     public void clearTasks() {
         System.out.println("Clear which tasks?\n" +
                 "1) Incomplete\n" +
-                "2) Archived\n" +
-                "3) Back");
+                "2) Archived");
         input = scanner.next();
-        if (input.equals("1")) {
-            incomplete.clear();
-            System.out.println("Cleared all incomplete tasks.");
-        } else if (input.equals("2")) {
-            archived.clear();
-            System.out.println("Cleared all archived tasks.");
-        } else if (input.equals("3")) {return;}
+
+        switch (input) {
+            case "1":
+                incomplete.clear();
+                System.out.println("Cleared all incomplete tasks.");
+                break;
+
+            case "2":
+                archived.clear();
+                System.out.println("Cleared all archived tasks.");
+                break;
+
+            case "b":
+            case "B":
+                return;
+        }
     }
 
     public TaskManager() { }
