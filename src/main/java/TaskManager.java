@@ -139,19 +139,16 @@ public class TaskManager {
         input = "";
         Task task = taskList.get(i);
         String status;
-        // determine the status of the task
-        if (taskList == incomplete) {
-            if (task.getInProgress()) {
-                status = "WORK IN PROGRESS";
-            } else {
-                status = "INCOMPLETE";
-            }
-        } else {
-            status = "DONE";
-        }
+
         // options for incomplete tasks
         if (taskList == incomplete) {
             while (!(input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4") || input.equals("5") || input.equals("6") || input.equals("7"))) {
+                // determine the status of the task
+                if (task.getInProgress()) {
+                    status = "WORK IN PROGRESS";
+                } else {
+                    status = "INCOMPLETE";
+                }
                 System.out.println("Task " + i + ") " + taskList.get(i).getTitle() + "; status: " + status + "\n" +
                         "1) Get details\n" +
                         "2) Set details\n" +
@@ -217,6 +214,8 @@ public class TaskManager {
             }
         } else { // options for complete tasks
             while (!(input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4"))) {
+                // only one possible status for archived tasks
+                status = "DONE";
                 System.out.println("Task " + i + ") " + taskList.get(i).getTitle() + "; status: " + status + "\n" +
                         "1) Get details\n" +
                         "2) Set details\n" +
