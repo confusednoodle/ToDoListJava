@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.fusesource.jansi.Ansi;
+import org.fusesource.jansi.AnsiConsole;
+
+import static org.fusesource.jansi.Ansi.ansi;
+
 // TODO: maybe replace all "back" options with the single Q
 // TODO: maybe implement persistent path storage
 
@@ -21,9 +26,9 @@ public class TaskManager {
         while(!(input.equals("1")||input.equals("2")||input.equals("3")||input.equals("4")||input.equals("5")||input.equals("6"))) {
             do {
                 int wips = incomplete.size();
-                System.out.println("Welcome to your ToDo-List! You have "+wips+" incomplete task(s).\n" +
-                        "Input B in any menu to return to the previous menu.\n" +
-                        "1) List tasks\n" +
+                System.out.println(ansi().fg(Ansi.Color.BLUE).a("Welcome to your ToDo-List! You have "+wips+" incomplete task(s).\n" +
+                        "Input B in any menu to return to the previous menu.").reset() +
+                        "\n1) List tasks\n" +
                         "2) Add task\n" +
                         "3) Clear tasks\n" +
                         "4) Save to file\n" +
@@ -90,6 +95,7 @@ public class TaskManager {
 
                     case "2":
                         taskList = archived;
+                        System.out.println("Selected archived tasks.");
                         break;
 
                     case "b":
@@ -107,7 +113,8 @@ public class TaskManager {
             for (int i = 0; i < taskList.size(); i++) {
                 if (taskList.get(i).getInProgress()) {
                     // display in progress status for tasks in progress
-                    System.out.println("" + i + ". " + taskList.get(i).getTitle() + ": IN PROGRESS \n");
+                    Ansi status = ansi().fg(Ansi.Color.YELLOW).a("WORK IN PROGRESS").reset();
+                    System.out.println("" + i + ". " + taskList.get(i).getTitle() + ": "+status+"\n");
                 } else {
                     System.out.println("" + i + ". " + taskList.get(i).getTitle() + "\n");
                 }
@@ -138,16 +145,16 @@ public class TaskManager {
     public void manageTask(ArrayList<Task> taskList, int i) {
         input = "";
         Task task = taskList.get(i);
-        String status;
+        Ansi status;
 
         // options for incomplete tasks
         if (taskList == incomplete) {
             while (!(input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4") || input.equals("5") || input.equals("6") || input.equals("7"))) {
                 // determine the status of the task
                 if (task.getInProgress()) {
-                    status = "WORK IN PROGRESS";
+                    status = ansi().fg(Ansi.Color.YELLOW).a("WORK IN PROGRESS").reset();
                 } else {
-                    status = "INCOMPLETE";
+                    status = ansi().fg(Ansi.Color.RED).a("INCOMPLETE").reset();
                 }
                 System.out.println("Task " + i + ") " + taskList.get(i).getTitle() + "; status: " + status + "\n" +
                         "1) Get details\n" +
@@ -215,7 +222,7 @@ public class TaskManager {
         } else { // options for complete tasks
             while (!(input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4"))) {
                 // only one possible status for archived tasks
-                status = "DONE";
+                status = ansi().fg(Ansi.Color.GREEN).a("DONE").reset();
                 System.out.println("Task " + i + ") " + taskList.get(i).getTitle() + "; status: " + status + "\n" +
                         "1) Get details\n" +
                         "2) Set details\n" +
